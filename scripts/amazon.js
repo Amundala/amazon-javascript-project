@@ -1,4 +1,5 @@
-import { cart } from "../data/cart.js";
+import { cart, addToCart } from "../data/cart.js";
+import { products } from "../data/products.js";
 
 let productsHtml = '';
 products.forEach((product) => {
@@ -54,41 +55,24 @@ products.forEach((product) => {
 //=== Incorporate our prudcts into the DOM ===
 document.querySelector(".js-products-grid").innerHTML = productsHtml
 
+function updateCartQuantity() {
+  //=== Calculate Cart qty ===
+  let cartQuantity = 0
+  cart.forEach((qty) => {
+    cartQuantity += qty.quantity
+  })
+
+  //=== Add it to the cart using the DOM ===
+  document.querySelector(".js-cart-quantity").innerHTML = cartQuantity
+}
 //=== Add to cart button ===
 document.querySelectorAll(".js-add-to-cart-button")
   .forEach((button) => {
     button.addEventListener('click', () => {
       let productId = button.dataset.productId
-      let matchItem
 
-      //=== Check if we already have the same product first in the cart ===
-      cart.forEach((item) => {
-        if (productId === item.productId) {
-          matchItem = item
-        }
-      })
-      if (matchItem) {
-        console.log(matchItem)
-        matchItem.quantity += 1
-      } else {
-        cart.push({
-          productId: productId,
-          quantity: 1
-        })
-      }
-
-      //=== Calculate Cart qty ===
-      let cartQuantity = 0
-      cart.forEach((qty) => {
-        cartQuantity += qty.quantity
-      })
-
-      //=== Add it to the cart using the DOM ===
-      document.querySelector(".js-cart-quantity").innerHTML = cartQuantity
-
-      // console.log(cartQuantity, "CART QTY MY FRIEND")
-
-      // console.log(cart, "THE CARTTTT")
+      addToCart(productId)
+      updateCartQuantity()
     })
   })
 
