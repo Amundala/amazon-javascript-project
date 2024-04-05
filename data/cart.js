@@ -1,6 +1,6 @@
-const cart = [
+export const cart = [
   {
     productName: 'Ibala',
     quantity: 1
   }
-]
+];
